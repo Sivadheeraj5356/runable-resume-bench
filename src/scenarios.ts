@@ -18,10 +18,30 @@ export class World {
   /** effect name -> number of times the real side effect ran */
   readonly calls: Record<string, number> = {};
   readonly log: string[] = [];
+  /** idempotency keys already processed per effect (models an idempotency-aware endpoint) */
+  private readonly seenKeys: Record<string, Set<string>> = {};
 
+  /** Non-idempotent endpoint: every call lands. */
   record(name: string, detail: string): void {
     this.calls[name] = (this.calls[name] ?? 0) + 1;
     this.log.push(`${name}: ${detail}`);
+  }
+
+  /** Idempotency-aware endpoint (like a deploy API with dedupe keys): a
+   * repeated key is acknowledged without performing the side effect twice. */
+  recordKeyed(name: string, key: string, detail: string): void {
+    this.seenKeys[name] = this.seenKeys[name] ?? new Set<string>();
+    if (this.seenKeys[name].has(key)) {
+      this.log.push(`${name}: duplicate key ${key} deduped, no second effect`);
+      return;
+    }
+    this.seenKeys[name].add(key);
+    this.calls[name] = (this.calls[name] ?? 0) + 1;
+    this.log.push(`${name}: ${detail}`);
+  }
+
+  keysSeen(name: string): number {
+    return this.seenKeys[name]?.size ?? 0;
   }
 }
 
@@ -47,20 +67,20 @@ export function siteBuilderWorkflow(world: World): Workflow {
         id: 'build-pages',
         run: async (input, ctx) => {
           const html = fakeModel('page build', String(input));
-          await ctx.effect('write-files', () => {
-            world.record('write-files', '3 pages written to workspace');
+          await ctx.effect('write-files', (key) => {
+            world.recordKeyed('write-files', key, '3 pages written to workspace');
             return 3;
-          });
+          }, { idempotent: true });
           return html;
         },
       },
       {
         id: 'deploy',
         run: async (input, ctx) => {
-          const url = await ctx.effect('deploy-site', () => {
-            world.record('deploy-site', 'site live at sandbox preview URL');
+          const url = await ctx.effect('deploy-site', (key) => {
+            world.recordKeyed('deploy-site', key, 'site live at sandbox preview URL');
             return 'https://preview.sandbox/crumb-culture';
-          });
+          }, { idempotent: true });
           return { html: input, url };
         },
       },
@@ -85,20 +105,20 @@ export function opsReportWorkflow(world: World): Workflow {
         id: 'draft-doc',
         run: async (input, ctx) => {
           const doc = fakeModel('report drafting', String(input));
-          await ctx.effect('create-doc', () => {
-            world.record('create-doc', 'weekly ops report doc created');
+          await ctx.effect('create-doc', (key) => {
+            world.recordKeyed('create-doc', key, 'weekly ops report doc created');
             return 'doc://ops-report/2026-W42';
-          });
+          }, { idempotent: true });
           return doc;
         },
       },
       {
         id: 'notify',
         run: async (input, ctx) => {
-          await ctx.effect('send-summary', () => {
-            world.record('send-summary', 'summary sent to owner');
+          await ctx.effect('send-summary', (key) => {
+            world.recordKeyed('send-summary', key, 'summary sent to owner');
             return true;
-          });
+          }, { idempotent: true });
           return input;
         },
       },
@@ -123,10 +143,10 @@ export function inboxTriageWorkflow(world: World): Workflow {
         id: 'draft-replies',
         run: async (input, ctx) => {
           const drafts = fakeModel('reply drafting', String(input));
-          await ctx.effect('save-drafts', () => {
-            world.record('save-drafts', '4 reply drafts saved');
+          await ctx.effect('save-drafts', (key) => {
+            world.recordKeyed('save-drafts', key, '4 reply drafts saved');
             return 4;
-          });
+          }, { idempotent: true });
           return drafts;
         },
       },

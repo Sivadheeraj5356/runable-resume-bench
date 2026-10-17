@@ -92,7 +92,7 @@ export function renderReport(trials: TrialResult[], scenarios: ScenarioSummary[]
     <tbody>${trialRows}</tbody>
   </table>
 
-  <footer>Deterministic, offline, no API keys. Each trial crashes a workflow process at the named point, resumes from the append-only journal with a fresh runner, and checks output identity plus exactly-once side effects.</footer>
+  <footer>Deterministic, offline, no API keys. Each trial crashes a workflow process at the named point, resumes from the append-only journal with a fresh runner, and checks output identity plus side-effect counts. Exactly-once holds for effects declared idempotent (endpoint dedupes on the journaled key); commit-gap crashes on non-idempotent effects halt with an explicit unknown-outcome error - no general exactly-once guarantee. Single-process, sequential, no retries or concurrency.</footer>
 </main>
 </body>
 </html>`;

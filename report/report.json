@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T09:36:52.878Z",
+  "generatedAt": "2026-10-17T09:46:26.038Z",
   "trials": [
     {
       "scenario": "site-builder",
@@ -10,8 +10,8 @@
       "stepsSkippedOnResume": 0,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1455,
-      "durationMs": 2
+      "journalBytes": 1926,
+      "durationMs": 1
     },
     {
       "scenario": "site-builder",
@@ -22,8 +22,8 @@
       "stepsSkippedOnResume": 1,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1455,
-      "durationMs": 1
+      "journalBytes": 1926,
+      "durationMs": 0
     },
     {
       "scenario": "site-builder",
@@ -34,8 +34,8 @@
       "stepsSkippedOnResume": 2,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1455,
-      "durationMs": 0
+      "journalBytes": 1926,
+      "durationMs": 1
     },
     {
       "scenario": "site-builder",
@@ -46,7 +46,31 @@
       "stepsSkippedOnResume": 3,
       "effectsExecuted": 1,
       "effectsReplayed": 0,
-      "journalBytes": 1455,
+      "journalBytes": 1926,
+      "durationMs": 0
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "commit-gap:build-pages",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 2,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 1926,
+      "durationMs": 0
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "commit-gap:deploy",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 0,
+      "effectsReplayed": 0,
+      "journalBytes": 1926,
       "durationMs": 1
     },
     {
@@ -58,7 +82,7 @@
       "stepsSkippedOnResume": 3,
       "effectsExecuted": 0,
       "effectsReplayed": 1,
-      "journalBytes": 1455,
+      "journalBytes": 1926,
       "durationMs": 0
     },
     {
@@ -70,7 +94,7 @@
       "stepsSkippedOnResume": 0,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1420,
+      "journalBytes": 1885,
       "durationMs": 1
     },
     {
@@ -82,7 +106,7 @@
       "stepsSkippedOnResume": 1,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1420,
+      "journalBytes": 1885,
       "durationMs": 0
     },
     {
@@ -94,7 +118,7 @@
       "stepsSkippedOnResume": 2,
       "effectsExecuted": 2,
       "effectsReplayed": 0,
-      "journalBytes": 1420,
+      "journalBytes": 1885,
       "durationMs": 0
     },
     {
@@ -106,8 +130,32 @@
       "stepsSkippedOnResume": 3,
       "effectsExecuted": 1,
       "effectsReplayed": 0,
-      "journalBytes": 1420,
+      "journalBytes": 1885,
+      "durationMs": 0
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "commit-gap:draft-doc",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 2,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 1885,
       "durationMs": 1
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "commit-gap:notify",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 0,
+      "effectsReplayed": 0,
+      "journalBytes": 1885,
+      "durationMs": 0
     },
     {
       "scenario": "ops-report",
@@ -118,7 +166,7 @@
       "stepsSkippedOnResume": 3,
       "effectsExecuted": 0,
       "effectsReplayed": 1,
-      "journalBytes": 1420,
+      "journalBytes": 1885,
       "durationMs": 0
     },
     {
@@ -130,7 +178,7 @@
       "stepsSkippedOnResume": 0,
       "effectsExecuted": 1,
       "effectsReplayed": 0,
-      "journalBytes": 961,
+      "journalBytes": 1201,
       "durationMs": 1
     },
     {
@@ -142,7 +190,7 @@
       "stepsSkippedOnResume": 1,
       "effectsExecuted": 1,
       "effectsReplayed": 0,
-      "journalBytes": 961,
+      "journalBytes": 1201,
       "durationMs": 0
     },
     {
@@ -154,7 +202,19 @@
       "stepsSkippedOnResume": 2,
       "effectsExecuted": 1,
       "effectsReplayed": 0,
-      "journalBytes": 961,
+      "journalBytes": 1201,
+      "durationMs": 0
+    },
+    {
+      "scenario": "inbox-triage",
+      "crashPoint": "commit-gap:draft-replies",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 0,
+      "effectsReplayed": 0,
+      "journalBytes": 1201,
       "durationMs": 0
     },
     {
@@ -166,7 +226,7 @@
       "stepsSkippedOnResume": 2,
       "effectsExecuted": 0,
       "effectsReplayed": 1,
-      "journalBytes": 961,
+      "journalBytes": 1201,
       "durationMs": 0
     }
   ],
@@ -174,23 +234,23 @@
     {
       "scenario": "site-builder",
       "steps": 4,
-      "crashPoints": 5,
-      "trialsPassed": 5,
-      "trialsTotal": 5
+      "crashPoints": 7,
+      "trialsPassed": 7,
+      "trialsTotal": 7
     },
     {
       "scenario": "ops-report",
       "steps": 4,
-      "crashPoints": 5,
-      "trialsPassed": 5,
-      "trialsTotal": 5
+      "crashPoints": 7,
+      "trialsPassed": 7,
+      "trialsTotal": 7
     },
     {
       "scenario": "inbox-triage",
       "steps": 3,
-      "crashPoints": 4,
-      "trialsPassed": 4,
-      "trialsTotal": 4
+      "crashPoints": 5,
+      "trialsPassed": 5,
+      "trialsTotal": 5
     }
   ]
 }

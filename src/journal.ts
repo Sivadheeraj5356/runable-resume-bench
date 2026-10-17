@@ -16,7 +16,7 @@
 import { appendFileSync, existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
-export type RecordKind = 'step' | 'effect';
+export type RecordKind = 'step' | 'effect' | 'effect-intent';
 
 export interface JournalRecord {
   kind: RecordKind;
@@ -26,8 +26,10 @@ export interface JournalRecord {
   name?: string;
   /** Hash of the step input, so stale memo entries cannot be reused after inputs change. */
   inputHash: string;
-  /** Serialized return value, replayed on resume. */
+  /** Serialized return value, replayed on resume. Null on intent records. */
   value: unknown;
+  /** Idempotency key handed to the effect function. Present on effect and effect-intent records. */
+  key?: string;
   at: string;
   durationMs: number;
 }

@@ -18,12 +18,33 @@ Original code. No Runable code, no API keys, no network calls, no cost.
 - Workflows are ordered steps. Each step's completion is appended to a
   JSONL **journal** with a hash of its input.
 - Side effects (deploy a site, send a summary, save drafts) only run through
-  `ctx.effect(name, fn)`. Their completion is journaled too.
+  `ctx.effect(name, fn)`. Before executing, the engine journals an INTENT
+  record with a deterministic idempotency key; after executing, it journals
+  the completion. The key is derived from the step input, so it is identical
+  across the crash and the resume.
 - On resume, completed steps are **skipped** and completed effects are
   **replayed from the journal** - never re-executed. A changed input hash
   invalidates the memo, so stale results are never silently reused.
 - A crash halfway through *writing* the journal leaves a torn final line;
   load detects it, truncates to the last complete record, and resumes.
+
+## The commit gap (the honest boundary)
+
+Journaling alone cannot make an external side effect exactly-once: the
+process can die *after* the effect executed in the world but *before* its
+completion was journaled. This engine's answer:
+
+- Effect declared `idempotent: true`: on resume the effect is re-executed
+  with the **same idempotency key**, and safety comes from the endpoint
+  deduping on that key (the bench's `World` models such an endpoint). This
+  is how real deploy/payment APIs work.
+- Otherwise: resume **halts with `UnknownOutcomeError`** naming the step,
+  effect, and key - it refuses to silently duplicate. No engine can
+  guarantee exactly-once over a non-idempotent external system; that takes
+  the endpoint's cooperation.
+
+The bench crashes every effect-bearing step at this exact gap
+(`commit-gap:*` trials) and verifies both behaviors.
 
 ## The bench
 
@@ -55,10 +76,12 @@ npm test        # node:test suite: journal, runner, exactly-once, bench
 - **Is:** a working durable-execution core (~200 lines), a fault injector, a
   correctness bench over every crash point, and tests including adversarial
   ones (a workflow that bypasses `ctx.effect` is caught by the bench).
-- **Isn't:** a production orchestrator. Single-process, sequential steps, no
-  retries/backoff, no concurrency control, no external state stores. The
-  numbers in the report measure *this* engine's resume correctness, not any
-  external system's performance.
+- **Isn't:** a production orchestrator, and not a general exactly-once
+  guarantee. Single-process, sequential steps, no retries/backoff, no
+  concurrency control, no external state stores. Exactly-once is shown only
+  for journaled, idempotency-key-aware effects; anything else halts
+  explicitly. The numbers in the report measure *this* engine's resume
+  correctness on synthetic workflows, not any external system's performance.
 
 ## Layout
 

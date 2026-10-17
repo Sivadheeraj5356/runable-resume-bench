@@ -1,0 +1,15 @@
+{
+  "name": "runable-resume-bench",
+  "version": "0.1.0",
+  "description": "A tiny durable execution engine and resume-correctness bench for long-running agent workflows. Work sample built for Runable's SWE Intern (New Grad) application.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "bench": "node --experimental-strip-types src/bench.ts",
+    "test": "node --experimental-strip-types --test test/bench.test.ts"
+  },
+  "license": "MIT"
+}

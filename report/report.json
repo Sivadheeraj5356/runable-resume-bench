@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-10-17T09:36:52.878Z",
+  "trials": [
+    {
+      "scenario": "site-builder",
+      "crashPoint": "before:research",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 4,
+      "stepsSkippedOnResume": 0,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1455,
+      "durationMs": 2
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "before:draft-copy",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 3,
+      "stepsSkippedOnResume": 1,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1455,
+      "durationMs": 1
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "before:build-pages",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 2,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1455,
+      "durationMs": 0
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "before:deploy",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 1455,
+      "durationMs": 1
+    },
+    {
+      "scenario": "site-builder",
+      "crashPoint": "during:deploy",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 0,
+      "effectsReplayed": 1,
+      "journalBytes": 1455,
+      "durationMs": 0
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "before:collect-metrics",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 4,
+      "stepsSkippedOnResume": 0,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1420,
+      "durationMs": 1
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "before:analyze",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 3,
+      "stepsSkippedOnResume": 1,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1420,
+      "durationMs": 0
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "before:draft-doc",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 2,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 2,
+      "effectsReplayed": 0,
+      "journalBytes": 1420,
+      "durationMs": 0
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "before:notify",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 1420,
+      "durationMs": 1
+    },
+    {
+      "scenario": "ops-report",
+      "crashPoint": "during:notify",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 3,
+      "effectsExecuted": 0,
+      "effectsReplayed": 1,
+      "journalBytes": 1420,
+      "durationMs": 0
+    },
+    {
+      "scenario": "inbox-triage",
+      "crashPoint": "before:fetch-threads",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 3,
+      "stepsSkippedOnResume": 0,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 961,
+      "durationMs": 1
+    },
+    {
+      "scenario": "inbox-triage",
+      "crashPoint": "before:classify",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 2,
+      "stepsSkippedOnResume": 1,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 961,
+      "durationMs": 0
+    },
+    {
+      "scenario": "inbox-triage",
+      "crashPoint": "before:draft-replies",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 1,
+      "effectsReplayed": 0,
+      "journalBytes": 961,
+      "durationMs": 0
+    },
+    {
+      "scenario": "inbox-triage",
+      "crashPoint": "during:draft-replies",
+      "passed": true,
+      "failures": [],
+      "stepsExecutedAfterResume": 1,
+      "stepsSkippedOnResume": 2,
+      "effectsExecuted": 0,
+      "effectsReplayed": 1,
+      "journalBytes": 961,
+      "durationMs": 0
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "site-builder",
+      "steps": 4,
+      "crashPoints": 5,
+      "trialsPassed": 5,
+      "trialsTotal": 5
+    },
+    {
+      "scenario": "ops-report",
+      "steps": 4,
+      "crashPoints": 5,
+      "trialsPassed": 5,
+      "trialsTotal": 5
+    },
+    {
+      "scenario": "inbox-triage",
+      "steps": 3,
+      "crashPoints": 4,
+      "trialsPassed": 4,
+      "trialsTotal": 4
+    }
+  ]
+}

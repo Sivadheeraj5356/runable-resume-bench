@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>resume-bench report</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Inter, Roboto, sans-serif; margin: 0; background: #f6f7f9; color: #17202a; }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 24px 64px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: #5b6572; font-size: 14px; margin-bottom: 28px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .card { background: #fff; border: 1px solid #e3e7ec; border-radius: 10px; padding: 16px 18px; }
+  .card .num { font-size: 26px; font-weight: 650; }
+  .card .label { font-size: 12.5px; color: #5b6572; margin-top: 2px; }
+  h2 { font-size: 16px; margin: 28px 0 10px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e3e7ec; border-radius: 10px; overflow: hidden; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #edf0f3; vertical-align: top; }
+  th { background: #fbfcfd; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #5b6572; }
+  tr:last-child td { border-bottom: none; }
+  .pass { color: #147a3d; font-weight: 600; }
+  .fail { color: #b3261e; font-weight: 600; }
+  code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+  footer { margin-top: 28px; font-size: 12.5px; color: #7a8490; }
+</style>
+</head>
+<body>
+<main>
+  <h1>resume-bench</h1>
+  <div class="sub">Crash-resume correctness for a tiny durable agent-workflow engine. Generated 2026-10-17T09:36:52.878Z.</div>
+  <div class="cards">
+    <div class="card"><div class="num">14/14</div><div class="label">crash trials passed</div></div>
+    <div class="card"><div class="num">23</div><div class="label">completed steps skipped on resume</div></div>
+    <div class="card"><div class="num">3</div><div class="label">side effects replayed, not re-run</div></div>
+    <div class="card"><div class="num">3</div><div class="label">agent workflows benched</div></div>
+  </div>
+
+  <h2>Scenarios</h2>
+  <table>
+    <thead><tr><th>Scenario</th><th>Steps</th><th>Crash points</th><th>Passed</th></tr></thead>
+    <tbody><tr>
+        <td>site-builder</td>
+        <td>4</td>
+        <td>5</td>
+        <td class="pass">5/5</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td>4</td>
+        <td>5</td>
+        <td class="pass">5/5</td>
+      </tr>
+<tr>
+        <td>inbox-triage</td>
+        <td>3</td>
+        <td>4</td>
+        <td class="pass">4/4</td>
+      </tr></tbody>
+  </table>
+
+  <h2>Every crash point</h2>
+  <table>
+    <thead><tr><th>Scenario</th><th>Crash point</th><th>Result</th><th>Skipped</th><th>Re-run</th><th>Effects replayed</th><th>Journal bytes</th><th>Failures</th></tr></thead>
+    <tbody><tr>
+        <td>site-builder</td>
+        <td><code>before:research</code></td>
+        <td class="pass">PASS</td>
+        <td>0</td>
+        <td>4</td>
+        <td>0</td>
+        <td>1455</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>site-builder</td>
+        <td><code>before:draft-copy</code></td>
+        <td class="pass">PASS</td>
+        <td>1</td>
+        <td>3</td>
+        <td>0</td>
+        <td>1455</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>site-builder</td>
+        <td><code>before:build-pages</code></td>
+        <td class="pass">PASS</td>
+        <td>2</td>
+        <td>2</td>
+        <td>0</td>
+        <td>1455</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>site-builder</td>
+        <td><code>before:deploy</code></td>
+        <td class="pass">PASS</td>
+        <td>3</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1455</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>site-builder</td>
+        <td><code>during:deploy</code></td>
+        <td class="pass">PASS</td>
+        <td>3</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1455</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td><code>before:collect-metrics</code></td>
+        <td class="pass">PASS</td>
+        <td>0</td>
+        <td>4</td>
+        <td>0</td>
+        <td>1420</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td><code>before:analyze</code></td>
+        <td class="pass">PASS</td>
+        <td>1</td>
+        <td>3</td>
+        <td>0</td>
+        <td>1420</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td><code>before:draft-doc</code></td>
+        <td class="pass">PASS</td>
+        <td>2</td>
+        <td>2</td>
+        <td>0</td>
+        <td>1420</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td><code>before:notify</code></td>
+        <td class="pass">PASS</td>
+        <td>3</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1420</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>ops-report</td>
+        <td><code>during:notify</code></td>
+        <td class="pass">PASS</td>
+        <td>3</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1420</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>inbox-triage</td>
+        <td><code>before:fetch-threads</code></td>
+        <td class="pass">PASS</td>
+        <td>0</td>
+        <td>3</td>
+        <td>0</td>
+        <td>961</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>inbox-triage</td>
+        <td><code>before:classify</code></td>
+        <td class="pass">PASS</td>
+        <td>1</td>
+        <td>2</td>
+        <td>0</td>
+        <td>961</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>inbox-triage</td>
+        <td><code>before:draft-replies</code></td>
+        <td class="pass">PASS</td>
+        <td>2</td>
+        <td>1</td>
+        <td>0</td>
+        <td>961</td>
+        <td>-</td>
+      </tr>
+<tr>
+        <td>inbox-triage</td>
+        <td><code>during:draft-replies</code></td>
+        <td class="pass">PASS</td>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+        <td>961</td>
+        <td>-</td>
+      </tr></tbody>
+  </table>
+
+  <footer>Deterministic, offline, no API keys. Each trial crashes a workflow process at the named point, resumes from the append-only journal with a fresh runner, and checks output identity plus exactly-once side effects.</footer>
+</main>
+</body>
+</html>

@@ -52,14 +52,20 @@ function crashPointsFor(workflow: Workflow): { label: string; plan: FaultPlan }[
   for (const step of workflow.steps) {
     points.push({ label: `before:${step.id}`, plan: { crashBeforeStep: step.id } });
   }
-  // Mid-step crash only makes sense for steps that commit an effect.
-  const effectSteps: Record<string, string> = {
-    'site-builder': 'deploy',
-    'ops-report': 'notify',
-    'inbox-triage': 'draft-replies',
+  // Crashes inside a step only make sense for steps that commit an effect.
+  // `during` crashes after the effect's completion is journaled; `commit-gap`
+  // crashes after the effect EXECUTED but before its completion was journaled -
+  // the decisive boundary, tested for every effect-bearing step.
+  const effectSteps: Record<string, string[]> = {
+    'site-builder': ['build-pages', 'deploy'],
+    'ops-report': ['draft-doc', 'notify'],
+    'inbox-triage': ['draft-replies'],
   };
-  const mid = effectSteps[workflow.id];
-  if (mid) points.push({ label: `during:${mid}`, plan: { crashDuringStep: mid } });
+  for (const s of effectSteps[workflow.id] ?? []) {
+    points.push({ label: `commit-gap:${s}`, plan: { crashAfterEffectExecute: s } });
+  }
+  const last = (effectSteps[workflow.id] ?? []).at(-1);
+  if (last) points.push({ label: `during:${last}`, plan: { crashDuringStep: last } });
   return points;
 }
 

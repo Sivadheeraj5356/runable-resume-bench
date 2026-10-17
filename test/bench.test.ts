@@ -4,7 +4,7 @@ import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Journal, hashInput, stableStringify } from '../src/journal.ts';
-import { CrashInjected, DurableRunner, emptyStats, type Workflow } from '../src/runner.ts';
+import { CrashInjected, DurableRunner, UnknownOutcomeError, emptyStats, type Workflow } from '../src/runner.ts';
 import { World, siteBuilderWorkflow, opsReportWorkflow, inboxTriageWorkflow } from '../src/scenarios.ts';
 import { runBench, runTrial } from '../src/bench.ts';
 
@@ -127,4 +127,78 @@ test('scenarios are deterministic across fresh worlds', async () => {
     const b = await new DurableRunner(Journal.load(freshJournalPath()).journal).run(factory(new World()));
     assert.equal(stableStringify(a), stableStringify(b));
   }
+});
+
+test('commit gap: idempotent effect stays exactly-once via the journaled key', async () => {
+  const path = freshJournalPath();
+  const world = new World();
+  const wf = siteBuilderWorkflow(world);
+  // Crash after deploy-site EXECUTED but before its completion was journaled.
+  await assert.rejects(
+    new DurableRunner(Journal.load(path).journal, { crashAfterEffectExecute: 'deploy' }).run(wf),
+    CrashInjected,
+  );
+  assert.equal(world.calls['deploy-site'], 1, 'effect executed once before the crash');
+
+  const stats = emptyStats();
+  const out = await new DurableRunner(Journal.load(path).journal).run(wf, stats);
+  assert.equal(world.calls['deploy-site'], 1, 'idempotent retry deduped by key: still exactly once');
+  assert.ok(stats.effectsRetriedWithKey.includes('deploy/deploy-site'), 'resume retried with the same key');
+  assert.ok(stableStringify(out).includes('crumb-culture'));
+});
+
+test('commit gap: non-idempotent effect halts with UnknownOutcomeError, no silent duplicate', async () => {
+  const path = freshJournalPath();
+  const world = new World();
+  const wf: Workflow = {
+    id: 'risky',
+    steps: [
+      {
+        id: 'charge',
+        run: async (_i, ctx) => {
+          // Non-idempotent endpoint (plain counter) and no idempotent declaration.
+          await ctx.effect('charge-card', () => { world.record('charge-card', 'charged'); return 'receipt'; });
+          return 'done';
+        },
+      },
+    ],
+  };
+  await assert.rejects(
+    new DurableRunner(Journal.load(path).journal, { crashAfterEffectExecute: 'charge' }).run(wf),
+    CrashInjected,
+  );
+  assert.equal(world.calls['charge-card'], 1);
+  // Resume must refuse to guess: unknown outcome, no re-execution.
+  await assert.rejects(new DurableRunner(Journal.load(path).journal).run(wf), UnknownOutcomeError);
+  assert.equal(world.calls['charge-card'], 1, 'no silent duplicate after halt');
+});
+
+test('commit gap: idempotency key is identical across crash and resume', async () => {
+  const path = freshJournalPath();
+  const seenKeys: string[] = [];
+  const wf: Workflow = {
+    id: 'keys',
+    steps: [
+      {
+        id: 's',
+        run: async (_i, ctx) => {
+          await ctx.effect('eff', (key) => { seenKeys.push(key); return 1; }, { idempotent: true });
+          return 'ok';
+        },
+      },
+    ],
+  };
+  await assert.rejects(new DurableRunner(Journal.load(path).journal, { crashAfterEffectExecute: 's' }).run(wf), CrashInjected);
+  await new DurableRunner(Journal.load(path).journal).run(wf);
+  assert.equal(seenKeys.length, 2, 'effect fn invoked once per process');
+  assert.equal(seenKeys[0], seenKeys[1], 'same deterministic key on both attempts');
+});
+
+test('intent record without completion never replays a value', async () => {
+  const path = freshJournalPath();
+  const { journal } = Journal.load(path);
+  journal.append({ kind: 'effect-intent', workflowId: 'w', stepId: 's', name: 'e', inputHash: 'h', key: 'k', value: null, at: new Date().toISOString(), durationMs: 0 });
+  // An intent alone must not be treated as a completed effect.
+  const found = journal.lookup('effect', 'w', 's', 'e', 'h');
+  assert.equal(found, undefined);
 });
